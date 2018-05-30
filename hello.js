@@ -34,4 +34,5 @@ function callback(error, response, body) {
 }
 
 var options = createURL('hello');
+
 request(options, callback);
