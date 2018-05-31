@@ -1,5 +1,6 @@
 /*eslint-env node*/
 
+/*eslint-disable no-unused-params */
 var request = require('request');
 var fs = require('fs');
 var cheerio = require('cheerio');
@@ -18,6 +19,7 @@ function createURL(word) {
 function response_to_file(text) {
     fs.writeFile('/projects/test/tmp', text, (err) => {
         if (err) {
+            
            return console.log('error writefile tmp');
         }
         console.log('file write');
@@ -29,7 +31,12 @@ function callback(error, response, body) {
       let html = body.toString();
       response_to_file(html);
       let $ = cheerio.load(html);
-      console.log($('.sentence-and-translations').text());
+      $('.sentence-and-translations').each((i, div) => {
+          let sentence = $(div).find('.sentence .text').text().trim();
+          let translation = $(div).find('.translations .text').first().text().trim();
+          console.log(sentence);
+          console.log(translation);
+      });
     }
 }
 
