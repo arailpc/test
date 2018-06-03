@@ -2,7 +2,7 @@ const request = require('request');
 const fs = require('fs');
 const cheerio = require('cheerio');
 
-var URLlist = ['hello', 'process', 'inevitable'];
+var URLlist = ['hello', 'process', 'inevitable', 'father'];
 
 function createURL(word, page) {
    let url = `https://tatoeba.org/rus/sentences/search/page:${page}?query=${word}&from=eng&to=rus&orphans=&unapproved=&user=&tags=&list=&has_audio=yes&trans_filter=limit&trans_to=rus&trans_link=&trans_user=&trans_orphan=&trans_unapproved=&trans_has_audio=&sort=random`;
@@ -44,7 +44,7 @@ class progress {
         this.translations.push(translation);
         // console.log(this.translations, this.c);
         if (this.c_on_page >= this.sentences_on_page) {
-            if(this.sentences_on_page < 10) {
+            if(this.sentences_on_page < 10 || this.c >= this.max)  {
                 this.finish();
                 return;
             }
