@@ -1,6 +1,8 @@
 const request = require('request');
 const fs = require('fs');
 const cheerio = require('cheerio');
+const sqlite3 = require('sqlite3');
+const parse = require('./parse');
 
 var URLlist = ['hello', 'process', 'inevitable', 'father'];
 
@@ -68,7 +70,7 @@ class progress {
         request(createURL(this.word, 1), grab_page.bind(this));
     }
     finish() {
-        console.log(this)
+        console.log(this);
     }
 }
 
@@ -78,13 +80,13 @@ function grab_page(error, response, body) {
         // response_to_file(html);
         let $ = cheerio.load(html);
         this.set_sentences_on_page($('.sentence-and-translations').length);
-        that = this;
+        var that = this;
         $('.sentence-and-translations').each((i, div) => {
             let sentence = $(div).find('.sentence .text').text().trim();
             let translation = $(div).find('.translations .text').first().text().trim();
             let id = $(div).find('a').first().text().trim().slice(1);
             request('https://audio.tatoeba.org/sentences/eng/' +  id + '.mp3')
-                .pipe(fs.createWriteStream('mp3/' + id  + '.mp3'));
+                .pipe(fs.createWriteStream('/projects/test/mp3/' + id  + '.mp3'));
             that.add(sentence, translation);
         });
     } else {
@@ -119,7 +121,71 @@ function grab_some_page(url_list) {
 }
 
 
-for (let i = 0; i < URLlist.length; i++) {
-    let obj = new progress();
-    obj.start(URLlist[i])
-}
+//for (let i = 0; i < URLlist.length; i++) {
+//    (new progress()).start(URLlist[i]);
+//}
+
+//let db = new sqlite3.Database('/projects/test/newdb.db', (err) => {
+//  if (err) {
+//    return console.error(err.message);
+//  }
+//  console.log('Connected to the SQlite database.');
+//});
+
+//let sql = `SELECT PlaylistId id,
+//                  Name name
+//           FROM playlists
+//           WHERE PlaylistId  = ?`;
+//let playlistId = 1;
+// 
+//
+//db.get(sql, [playlistId], (err, row) => {
+//  if (err) {
+//    return console.error(err.message);
+//  }
+//  return row
+//    ? console.log(row.id, row.name)
+//    : console.log(`No playlist found with the id ${playlistId}`);
+//});
+// 
+
+//let sql = `CREATE TABLE words(id integer PRIMARY KEY,
+// word text NOT NULL
+//);`;
+//
+//db.get(sql, []);
+
+//let sql = `INSERT INTO words (
+// id,
+// word)
+//VALUES
+// (?, ?);`;
+//
+//db.get(sql, [1, 'hello']);
+
+//let sql = `SELECT id,
+//                  word       
+//           FROM words
+//           WHERE id  = ?`;
+//let id = 2;
+// 
+//
+//db.get(sql, [id], (err, row) => {
+//  if (err) {
+//    return console.error(err.message);
+//  }
+//  return row
+//    ? console.log(row.id, row.word)
+//    : console.log(`No playlist found with the id ${id}`);
+//});
+//
+//
+//db.close((err) => {
+//  if (err) {
+//    console.error(err.message);
+//  }
+//  console.log('Close the database connection.');
+//});
+
+
+

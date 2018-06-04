@@ -5,7 +5,8 @@
   "main": "hello.js",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "sqlite3": "^4.0.0"
   },
   "devDependencies": {},
   "scripts": {
